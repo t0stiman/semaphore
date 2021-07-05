@@ -24,6 +24,7 @@ from .attachment import Attachment
 from .group import Group
 from .groupV2 import GroupV2
 from .sticker import Sticker
+from .reaction import Reaction
 
 
 @attr.s(auto_attribs=True, frozen=True)
@@ -37,3 +38,4 @@ class DataMessage:
     group: Optional[Group] = attr.ib(default=None)
     groupV2: Optional[GroupV2] = attr.ib(default=None)
     sticker: Optional[Sticker] = attr.ib(default=None)
+    reaction: Optional[Reaction] = attr.ib(default=None)

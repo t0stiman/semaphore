@@ -75,6 +75,10 @@ class Message:
                 return self.data_message.group.group_id
         return None
 
+    def get_reaction(self) -> str:
+        """Return the message's reaction if there is one."""
+        return self.data_message.reaction
+
     async def reply(self, *args, **kwargs) -> bool:
         """Send a reply to the message.
 

@@ -30,6 +30,7 @@ from .message_sender import MessageSender
 from .socket import Socket
 from .sticker import Sticker
 from .sticker_pack import StickerPack
+from .reaction import Reaction
 
 
 class MessageReceiver:
@@ -97,6 +98,14 @@ class MessageReceiver:
                             pack=pack,
                         )
 
+                    reaction_data = data.get("reaction")
+                    reaction: Optional[Reaction] = None
+                    if reaction_data:
+                        reaction = Reaction(
+                            emoji=reaction_data["emoji"],
+                            remove=reaction_data["remove"],
+                        )
+
                     data_message = DataMessage(
                         timestamp=data["timestamp"],
                         body=data.get("body", ""),
@@ -115,6 +124,7 @@ class MessageReceiver:
                         group=group,
                         groupV2=groupV2,
                         sticker=sticker,
+                        reaction=reaction
                     )
 
                 yield Message(

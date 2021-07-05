@@ -16,17 +16,20 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
-Signal Bot example, repeats received messages.
+Signal Bot example, detects emoji reactions on messages and sends them in a message.
 """
 import os
 
 from semaphore import Bot, ChatContext
 
 
-async def reaction_echo(ctx: ChatContext) -> None:
-    if not ctx.message.empty():
+async def echo(ctx: ChatContext) -> None:
+    reaction = ctx.message.get_reaction()
+
+    # if the message has a reaction and the reaction was added to the message, not removed:
+    if reaction and reaction.remove == False:
         await ctx.message.typing_started()
-        await ctx.message.reply(ctx.message.get_body())
+        await ctx.message.reply("I saw: "+reaction.emoji)
         await ctx.message.typing_stopped()
 
 
@@ -34,7 +37,7 @@ async def main():
     """Start the bot."""
     # Connect the bot to number.
     async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
-        bot.register_handler("", reaction_echo)
+        bot.register_handler("", echo)
 
         # Run the bot until you press Ctrl-C.
         await bot.start()

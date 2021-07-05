@@ -15,31 +15,15 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
-"""
-Signal Bot example, repeats received messages.
-"""
-import os
+"""This module contains an object that represents a Signal reaction."""
+from typing import List, Optional
 
-from semaphore import Bot, ChatContext
+import attr
 
 
-async def reaction_echo(ctx: ChatContext) -> None:
-    if not ctx.message.empty():
-        await ctx.message.typing_started()
-        await ctx.message.reply(ctx.message.get_body())
-        await ctx.message.typing_stopped()
+@attr.s(auto_attribs=True, frozen=True)
+class Reaction:
+    """This object represents a Signal reaction."""
 
-
-async def main():
-    """Start the bot."""
-    # Connect the bot to number.
-    async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
-        bot.register_handler("", reaction_echo)
-
-        # Run the bot until you press Ctrl-C.
-        await bot.start()
-
-
-if __name__ == '__main__':
-    import anyio
-    anyio.run(main)
+    emoji: str
+    remove: bool
