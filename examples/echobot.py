@@ -23,7 +23,7 @@ import os
 from semaphore import Bot, ChatContext
 
 
-async def reaction_echo(ctx: ChatContext) -> None:
+async def echo(ctx: ChatContext) -> None:
     if not ctx.message.empty():
         await ctx.message.typing_started()
         await ctx.message.reply(ctx.message.get_body())
@@ -34,7 +34,7 @@ async def main():
     """Start the bot."""
     # Connect the bot to number.
     async with Bot(os.environ["SIGNAL_PHONE_NUMBER"]) as bot:
-        bot.register_handler("", reaction_echo)
+        bot.register_handler("", echo)
 
         # Run the bot until you press Ctrl-C.
         await bot.start()
